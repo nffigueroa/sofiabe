@@ -1,9 +1,8 @@
 const express = require('express')
-const mysql = require('mysql')
-var {getProducts, deleteProduct} = require('./middleware/product')
+import middlewares from './middleware/product';
 
 
-var app = express()
+let app = express()
 
 app.all('/*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -13,10 +12,9 @@ app.all('/*', function(req, res, next) {
   
   });
 
-app.get('/product', getProducts, function(req, res) { });
-app.post('/product', function(req, res) { });
-app.get('/product/:idProducto', function(req, res) { });
-app.delete('/product/:idProducto', deleteProduct, function (req, res) {});
-
-
-module.exports = app
+app.get('/product', middlewares.getProducts, (req, res) => {});
+app.post('/product', (req, res) => { });
+app.get('/product/:idProducto', (req, res) => { });
+app.delete('/product/:idProducto', middlewares.deleteProduct, (req, res) => {});
+ 
+export default app;

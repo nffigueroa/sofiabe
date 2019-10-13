@@ -1,17 +1,16 @@
-const con = require('../mysql.js/index.js')
+import con from '../util/mysql';
 
 const middlewares = {
-    getProducts: function (req, res, next) {
-        con.getConnection(function(err, connection) {
+    getProducts:  (req, res, next) => {
+        con.getConnection((err, connection) => {
             if (err) throw err;
             connection.query('Call IVN_llenarTabla_Producto(?)',[1], function (err, result) {
                 if (err) throw err;
-                resProduct = result[0]
-                res.send(JSON.stringify(resProduct))
+                res.send(JSON.stringify(result[0]))
             });
         })
     },
-    deleteProduct: function (req, res, next) {
+    deleteProduct: (req, res, next) => {
         let idProducto = req.params.idProducto
         console.log('Se intenta eliminar el idProducto' + idProducto)
         con.getConnection(function (err, connection) {
@@ -27,4 +26,4 @@ const middlewares = {
     }
 }
 
-module.exports = middlewares
+export default middlewares;

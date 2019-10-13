@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "test",
-    "build": "babel --presets es2015 -d lib/ src"
+    "build": "babel --presets es2015 -d lib/ src",
+    "server": "node lib/"
   },
   "repository": {
     "type": "git",
