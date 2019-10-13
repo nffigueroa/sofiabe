@@ -1,0 +1,39 @@
+{
+  "name": "sofiabe",
+  "version": "1.0.0",
+  "description": "Backend in node js for SOFIA APP",
+  "main": "app.js",
+  "scripts": {
+    "test": "test",
+    "build": "babel --presets es2015 -d lib/ src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nffigueroa/sofiabe.git"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "sofia",
+    "mongo",
+    "mysql"
+  ],
+  "author": "Fabian Figueroa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nffigueroa/sofiabe/issues"
+  },
+  "homepage": "https://github.com/nffigueroa/sofiabe#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/preset-env": "^7.6.3",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
