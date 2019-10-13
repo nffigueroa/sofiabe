@@ -2,13 +2,15 @@ import con from '../util/mysql';
 
 const middlewares = {
     getProducts:  (req, res, next) => {
+        const idSucursal = req.params.idSucursal;
         con.getConnection((err, connection) => {
             if (err) throw err;
-            connection.query('Call IVN_llenarTabla_Producto(?)',[1], function (err, result) {
+            connection.query('Call IVN_llenarTabla_Producto(?)', idSucursal, function (err, result) {
                 if (err) throw err;
-                res.send(JSON.stringify(result[0]))
+                res.send(result[0])
             });
         })
+        next();
     },
     deleteProduct: (req, res, next) => {
         let idProducto = req.params.idProducto
