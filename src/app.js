@@ -14,7 +14,6 @@ app.all('/*', function(req, res, next) {
     res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
     next();
   });
-
 app.get('/product/:idSucursal', middlewares.getProducts, (req, res) => {});
 app.post('/product', (req, res) => { });
 app.get('/product/:idProducto', (req, res) => { });

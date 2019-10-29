@@ -1,5 +1,6 @@
 import con from '../util/mysql';
 import { decrypt } from '../util/common';
+import { encrypt } from '../../lib/util/common';
 
 
 const userMiddleware = {
@@ -39,7 +40,6 @@ const userMiddleware = {
                 })
                 return;
             } 
-            con.
             res.status(401);
             res.send({auth: false})
             
