@@ -31,6 +31,16 @@ const otherMiddleWare = {
             })
         })
         next();
+    },
+    getMeasurements: (req, res, next) => {
+        con.getConnection((err , connection) => {
+            if (err) throw err;
+            connection.query('Call GEN_consultaLLenarComboMedicion()', '', (err, result) => {
+                if (err) throw err;
+                res.send(JSON.stringify(result[0]));
+            })
+        })
+        next();
     }
 }
 

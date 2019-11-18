@@ -1,5 +1,7 @@
 import { key } from './const';
 import CryptoJS from 'crypto-js'
+var moment = require('moment');
+
 
 
 export const encrypt = (plainText) => {
@@ -15,4 +17,8 @@ export const decrypt = (cipherText) => {
     let decrypt = CryptoJS.AES.decrypt(bytes, key);
     let plain = decrypt.toString(CryptoJS.enc.Utf8);
     return plain;
+}
+
+export const getDateYYYYMMDD = () => {
+   return moment().subtract(10, 'days').calendar();
 }

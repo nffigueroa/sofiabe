@@ -19,7 +19,7 @@ app.all('/*', function(req, res, next) {
 
   /*Product API*/
 app.get('/product/:idSucursal', middlewares.getProducts, (req, res) => {});
-app.post('/product', (req, res) => { });
+app.post('/product', middlewares.saveProduct, (req, res) => { });
 app.get('/product/:idProducto', (req, res) => { });
 app.delete('/product/:idProducto', middlewares.deleteProduct, (req, res) => {});
 
@@ -32,5 +32,6 @@ app.post('/auth',userMiddleware.loginProcess, (req, res) => {}) ;
 app.get('/other/categories', otherMiddleWare.getCategories, (req, res) => {});
 app.get('/other/marks', otherMiddleWare.getMarks, (req, res) => {});
 app.get('/other/presentations', otherMiddleWare.getPresentations, (req, res) => {});
+app.get('/other/measurements', otherMiddleWare.getMeasurements, (req, res) => {});
  
 export default app;
