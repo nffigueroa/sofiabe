@@ -1,15 +1,17 @@
-import con from '../util/mysql';
+import { callSPWithCallback } from '../network';
+import { CreateNewClient } from '../models/createNewClient';
 
 const clientMiddleware = {
     getClients: (req, res, next) => {
         const idSucursal = req.params.idSucursal;
-        con.getConnection((err , connection) => {
-            if (err) throw err;
-            connection.query('Call CLI_llenarTabla_Cliente(?)', idSucursal, (err, result) => {
-                if (err) throw err;
-                res.send(JSON.stringify(result[0]));
-            })
-        })
+        callSPWithCallback('Call CLI_llenarTabla_Cliente(?)',(response) => res.send(response),  idSucursal);
+        next();
+    },
+    createNewClient: (req, res, next) => {
+        const idSucursal = req.params.idSucursal;
+        const bodyCereateNewClient = new CreateNewClient(req.body);
+        console.log(bodyCereateNewClient)
+        callSPWithCallback('Call CLI_registrarCliente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (response) => res.send(response) , []);
         next();
     }
 }

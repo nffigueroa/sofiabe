@@ -20,12 +20,17 @@ app.all('/*', function(req, res, next) {
   /*Product API*/
 app.get('/product/:idSucursal', middlewares.getProducts, (req, res) => {});
 app.post('/product', middlewares.saveProduct, (req, res) => { });
+app.put('/product', middlewares.updateProduct, (req, res) => { });
 app.get('/product/:idProducto', (req, res) => { });
 app.delete('/product/:idProducto', middlewares.deleteProduct, (req, res) => {});
 
 
 /** Client API */
 app.get('/client/:idSucursal', clientMiddleware.getClients, (req, res) => {});
+app.post('/client/:idSucursal', clientMiddleware.createNewClient, (req, res) => {}) ;
+
+
+/** User API */
 app.post('/auth',userMiddleware.loginProcess, (req, res) => {}) ;
 
 /** Others API */

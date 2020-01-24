@@ -1,5 +1,6 @@
 import { key } from './const';
 import CryptoJS from 'crypto-js'
+import con from '../util/mysql';
 var moment = require('moment');
 
 
@@ -20,5 +21,18 @@ export const decrypt = (cipherText) => {
 }
 
 export const getDateYYYYMMDD = () => {
-   return moment().subtract(10, 'days').calendar();
+   return moment().format('YYYY-MM-DD');
+}
+
+export const getCurrentTime = () => {
+    return moment().format('HH:MM:SS')
+}
+
+export const registerMovements = ({id_usuario, descripcion}) => {
+    con.getConnection((err, connection) => {
+        if (err) throw err;
+        connection.query('Call US_registrarHistorial(? ,? ,? ,? )', [id_usuario, , getDateYYYYMMDD(), getCurrentTime(), descripcion], (err, result) => {
+            if (err) throw err;
+        })
+    })
 }

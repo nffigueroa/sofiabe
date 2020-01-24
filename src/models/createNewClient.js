@@ -1,0 +1,33 @@
+export const CreateNewClient = (
+    idSucursal ,
+    nombre,
+    apellido,
+    telefono ,
+    direccion,
+    mail,
+    id_ciudad ,
+    id_usuario ,
+    iden ,
+    tipoCliente, 
+    declaraIva,
+    declaraIca,
+    reteFuente,
+    milesIca,
+    dv 
+) => {
+    idSucursal ,
+    nombre,
+    apellido,
+    telefono ,
+    direccion,
+    mail,
+    id_ciudad ,
+    id_usuario ,
+    iden ,
+    tipoCliente, 
+    declaraIva,
+    declaraIca,
+    reteFuente,
+    milesIca,
+    dv 
+}
