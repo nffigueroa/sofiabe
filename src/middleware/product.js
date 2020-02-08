@@ -1,28 +1,38 @@
-import con from '../util/mysql';
-import { getDateYYYYMMDD } from '../util/common';
-import { registerMovements } from '../../lib/util/common';
+import { getDateYYYYMMDD, registerMovements } from '../util/common';
 import { callSPWithCallback } from '../network';
 
 const middlewares = {
-    getProducts:  (req, res, next) => {
+    getProducts:  async (req, res, next) => {
         const idSucursal = req.params.idSucursal;
-
-        callSPWithCallback('Call IVN_llenarTabla_Producto(?)', (response) => {console.log(response); res.send(response)} ,idSucursal)
-        next();
+        const response = await callSPWithCallback('Call IVN_llenarTabla_Producto(?)', idSucursal);
+        return {
+            status: 200,
+            body: response
+        };
     },
-    deleteProduct: (req, res, next) => {
+    deleteProduct: async(req, res, next) => {
         let idProducto = req.params.idProducto
-
-        callSPWithCallback('Call IVN_eliminar_Producto(?)',(response) => res.send(response),  [idProducto])
-    
-
-        next()
+            const body = await callSPWithCallback('Call IVN_eliminar_Producto(?)',  idProducto)
+            .then((response) => {
+                return {
+                status: 200,
+                body: {
+                    propertyRemoved: !!(response)
+                }
+            }}).catch((err) => {
+                return {
+                    status: 500,
+                    body: {
+                        message: 'deleteProduct err: ' + err
+                    }
+                };
+            })  
+            return body;
     },
-    saveProduct:  (req, res, next) => {
+    saveProduct:  async (req, res, next) => {
         const product_body = req.body;
 
-        callSPWithCallback('Call IVN_registrarProducto(?, ?, ?, ?, ?, ?, ?, ?)', (response) => res.send(response),
-        [
+        const body = await callSPWithCallback('Call IVN_registrarProducto(?, ?, ?, ?, ?, ?, ?, ?)',
             product_body.product_name,
             getDateYYYYMMDD(),
             product_body.product_creation_user,
@@ -31,14 +41,27 @@ const middlewares = {
             product_body.product_measurement,
             product_body.product_presentation,
             product_body.product_id_sucursal
-        ])
-    
-        next();
+        ).then((idProductoCreated) => {
+            return {
+                status: 200,
+                body: {
+                    id_produccto: idProductoCreated[0].l_product_id
+                }
+            };
+        }).catch((err) => {
+            return {
+                status: 500,
+                body: {
+                    message: 'saveProduct failed err:' + err
+                }
+            }
+        })
+        return body;
     },
-    updateProduct:  (req, res, next) => {
+    updateProduct: async(req, res, next) => {
         const product_body = req.body;
         registerMovements({id_usuario: product_body.product_creation_user, descripcion: `updateProduct con id ${product_body.product_id_producto}`})
-        callSPWithCallback('Call IVN_consultaActualizarProducto(?, ?, ?, ?, ?, ?)', (response) => res.send(response),
+        const response = await callSPWithCallback('Call IVN_consultaActualizarProducto(?, ?, ?, ?, ?, ?)',
         [
             product_body.product_id_producto,
             product_body.product_name,
@@ -47,7 +70,10 @@ const middlewares = {
             product_body.product_measurement,
             product_body.product_presentation,
         ])
-        next();
+        return {
+            status: 200,
+            body: response
+        };
     },
 }
 

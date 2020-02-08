@@ -1,18 +1,32 @@
 
-import con from '../util/mysql';
+import connection from './mysql';
 
 
 /**
  * 
  * @param {*} storeProcedureNameAndParams Script in mysql calling the sp
- * @param {*} callback It will triggered once the query was done.
  * @param  {...any} params All params that the query needs.
  */
-export const callSPWithCallback = (storeProcedureNameAndParams, callback = {}, ...params) => {
+export const callSPWithCallback = (storeProcedureNameAndParams, ...params) => {
+    try {
+        return new Promise((resolve, reject) => {
+            connection.query(storeProcedureNameAndParams, params, (err, results) => {
+                if (err || !results) {
+                    return reject(err);
+                }
+                resolve((results[0]));
+            }) 
+        })
+        
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const callSPWithNotCallback = (storeProcedureNameAndParams, ...params) => {
     try {
         con.query(storeProcedureNameAndParams, params, (err, result) => {
             if (err) throw err;
-            callback(JSON.stringify(result[0]))
         }) 
     } catch (error) {
         throw error;

@@ -1,24 +1,41 @@
 
-import con from '../util/mysql';
-import { getCurrentTime, registerMovements } from '../util/common';
 import { callSPWithCallback } from '../network';
 
 const otherMiddleWare = {
-    getCategories: (req, res, next) => {
-        callSPWithCallback('Call GEN_consultaLLenarComboCategoria()', (response) => res.send(response), '')
-        next();
+    getCategories: async(req, res, next) => {
+        const response = await callSPWithCallback('Call GEN_consultaLLenarComboCategoria()', '')
+        return {
+            status: 200,
+            body: response
+        }
     },
-    getMarks: (req, res, next) => {
-        callSPWithCallback('Call GEN_consultaLLenarComboMarca()',(response) => res.send(response) , '')
-        next();
+    getMarks: async(req, res, next) => {
+        const response = await callSPWithCallback('Call GEN_consultaLLenarComboMarca()','')
+        return {
+            status: 200,
+            body: response
+        }
     },
-    getPresentations: (req, res, next) => {
-        callSPWithCallback('Call GEN_consultaLLenarComboPresentacion()', (response) => res.send(response), '')
-        next();
+    getPresentations: async(req, res, next) => {
+        const response = await callSPWithCallback('Call GEN_consultaLLenarComboPresentacion()',  '')
+        return {
+            status: 200,
+            body: response
+        }
     },
-    getMeasurements: (req, res, next) => {
-        callSPWithCallback('Call GEN_consultaLLenarComboMedicion()', (response) => res.send(response), '')
-        next();
+    getMeasurements: async(req, res, next) => {
+        const response = await callSPWithCallback('Call GEN_consultaLLenarComboMedicion()',  '');
+        return {
+            status: 200,
+            body: response
+        }
+    },
+    getCities: async(req, res, next) => {
+        const response = await callSPWithCallback('Call GEN_llenarComboCidad_Mi_Sucursal()', '')
+        return {
+            status: 200,
+            body: response
+        }
     }
 }
 

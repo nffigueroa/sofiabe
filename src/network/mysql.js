@@ -1,22 +1,22 @@
 import mysql from 'mysql';
 
-let  con = null;
+let  connection = null;
 const conexion = () => {
-    if (!con) {
-    con = mysql.createConnection({
+    if (!connection) {
+        connection = mysql.createConnection({
         host: "localhost",
         user: "root",
         password: "123123",
         database: 'swincomc_20140512_siventas'
         });
     }
-    con.connect((err) => {
+    connection.connect((err) => {
        if (err) {
         console.error('[db err', err);
         setTimeout(() => conexion, 2000);
        }
     })
-    con.on('error', err => {
+    connection.on('error', err => {
         console.error('[db err', err);
         if (err.code === 'PROTOCOL_CONNECTION_LOST') {
             conexion();
@@ -26,4 +26,4 @@ const conexion = () => {
     })
 }
 conexion();
-export default con;
+export default connection;

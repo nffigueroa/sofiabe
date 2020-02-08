@@ -4,6 +4,7 @@ import userMiddleware from './middleware/user';
 import bodyParser from 'body-parser';
 import clientMiddleware from './middleware/client';
 import otherMiddleWare from './middleware/other';
+import { Response } from './middleware';
 
 
 let app = express()
@@ -18,25 +19,27 @@ app.all('/*', function(req, res, next) {
   });
 
   /*Product API*/
-app.get('/product/:idSucursal', middlewares.getProducts, (req, res) => {});
-app.post('/product', middlewares.saveProduct, (req, res) => { });
-app.put('/product', middlewares.updateProduct, (req, res) => { });
-app.get('/product/:idProducto', (req, res) => { });
-app.delete('/product/:idProducto', middlewares.deleteProduct, (req, res) => {});
+app.get('/product/:idSucursal',(req, res, next) => Response(req, res, next, middlewares.getProducts));
+app.post('/product', (req, res, next) => Response(req, res, next, middlewares.saveProduct));
+app.put('/product', (req, res, next) => Response(req, res, next,  middlewares.updateProduct));
+//app.get('/product/:idProducto', (req, res, next) => Response(req, res, next ));
+app.delete('/product/:idProducto', (req, res, next) => Response(req, res, next, middlewares.deleteProduct));
 
 
 /** Client API */
-app.get('/client/:idSucursal', clientMiddleware.getClients, (req, res) => {});
-app.post('/client/:idSucursal', clientMiddleware.createNewClient, (req, res) => {}) ;
+app.get('/client/:idSucursal', (req, res, next) => Response(req, res, next, clientMiddleware.getClients));
+app.delete('/client/:idClient', (req, res, next) => Response(req, res, next, clientMiddleware.deleteclient));
+app.post('/client', (req, res, next) => Response(req, res, next, clientMiddleware.createNewClient));
 
 
 /** User API */
-app.post('/auth',userMiddleware.loginProcess, (req, res) => {}) ;
+app.post('/auth', (req, res, next) => Response(req, res, next, userMiddleware.loginProcess)) ;
 
 /** Others API */
-app.get('/other/categories', otherMiddleWare.getCategories, (req, res) => {});
-app.get('/other/marks', otherMiddleWare.getMarks, (req, res) => {});
-app.get('/other/presentations', otherMiddleWare.getPresentations, (req, res) => {});
-app.get('/other/measurements', otherMiddleWare.getMeasurements, (req, res) => {});
+app.get('/other/categories', (req, res, next) => Response(req, res, next, otherMiddleWare.getCategories));
+app.get('/other/marks', (req, res, next) => Response(req, res, next, otherMiddleWare.getMarks));
+app.get('/other/presentations', (req, res, next) => Response(req, res, next, otherMiddleWare.getPresentations));
+app.get('/other/measurements', (req, res, next) => Response(req, res, next, otherMiddleWare.getMeasurements));
+app.get('/other/cities', (req, res, next) => Response(req, res, next, otherMiddleWare.getCities));
  
 export default app;
