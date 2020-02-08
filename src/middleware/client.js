@@ -1,6 +1,7 @@
 import { callSPWithCallback } from '../network';
 import { CreateNewClient } from '../models/createNewClient';
 import { ResponseBodyBuilder } from '../models/response';
+import { registerMovements } from '../util/common';
 
 const clientMiddleware = {
     getClients: async(req, res, next) => {
@@ -20,7 +21,14 @@ const clientMiddleware = {
     deleteClient: async(req, res, next) => {
         const idClient = req.params.idClient;  
         const response = await callSPWithCallback('Call CLI_eliminar_Cliente(?)', idClient)
-        .then((response) => ResponseBodyBuilder(200, false , response))
+        .then((response) => {
+            console.log(response)
+            if (response) {
+                return ResponseBodyBuilder(200, false , !!(response))
+            } else {
+                return ResponseBodyBuilder(404, true , `Can not find id ${idClient}`);
+            }
+        })
         .catch((error) => ResponseBodyBuilder(500, false , error))
         return response;
     }

@@ -2,14 +2,14 @@
 export const Response = async (req, res, next, middleware) => {
     try {
         const middleWareResponse = await middleware(req, res, next);
-        if ([200, 201].find(element => element === middleWareResponse.status) !== -1) {
-            res.send({
+        if ([200, 201].find(element => element === middleWareResponse.status)) {
+            res.status(middleWareResponse.status).send({
                 status: middleWareResponse.status,
                 error: false,
                 body: middleWareResponse.body
             })
         } else {
-            res.send({
+            res.status(middleWareResponse.status).send({
                 status: middleWareResponse.status,
                 error: true,
                 body: middleWareResponse.body
@@ -19,7 +19,7 @@ export const Response = async (req, res, next, middleware) => {
         res.status(500).send({
             status: 500,
             error: true,
-            body: error
+            body: error.message
         })
     }
 }
