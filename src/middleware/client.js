@@ -22,7 +22,6 @@ const clientMiddleware = {
         const idClient = req.params.idClient;  
         const response = await callSPWithCallback('Call CLI_eliminar_Cliente(?)', idClient)
         .then((response) => {
-            console.log(response)
             if (response) {
                 return ResponseBodyBuilder(200, false , !!(response))
             } else {

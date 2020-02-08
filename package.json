@@ -4,9 +4,8 @@
   "description": "Backend in node js for SOFIA APP",
   "main": "app.js",
   "scripts": {
-    "test": "test",
     "build": "babel --presets es2015 -d lib/ src",
-    "server": "node lib/"
+    "server": "nodemon lib/"
   },
   "repository": {
     "type": "git",
