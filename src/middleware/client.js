@@ -18,7 +18,7 @@ const clientMiddleware = {
         return response;
     },
     deleteClient: async(req, res, next) => {
-        const idClient = req.param.idClient;  
+        const idClient = req.params.idClient;  
         const response = await callSPWithCallback('Call CLI_eliminar_Cliente(?)', idClient)
         .then((response) => ResponseBodyBuilder(200, false , response))
         .catch((error) => ResponseBodyBuilder(500, false , error))
