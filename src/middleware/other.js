@@ -36,7 +36,35 @@ const otherMiddleWare = {
             status: 200,
             body: response
         }
-    }
+    },
+    getIdCompnay: async(req) => {
+        const { idSucursal } = req.params
+        const response = await callSPWithCallback('Call GEN_consultaIdEmpresa(?)', idSucursal)
+        .then((response) => ResponseBodyBuilder(200, false , response))
+        .catch((err) => ResponseBodyBuilder(500, true , err))
+        return response;
+    },
+    getSucursalsByCompany: async() => {
+        const { idEmpresa } = req.params
+        const response = await callSPWithCallback('Call GEN_consultaLlenarComboSucursal(?)', idEmpresa)
+        .then((response) => ResponseBodyBuilder(200, false , response))
+        .catch((err) => ResponseBodyBuilder(500, true , err))
+        return response;
+    },
+    getReasonForElimination: async() => {
+        const response = await callSPWithCallback('Call GEN_consultaMotivosEliminacion()')
+        .then((response) => ResponseBodyBuilder(200, false , response))
+        .catch((err) => ResponseBodyBuilder(500, true , err))
+        return response;
+    },
+    getIdReasons: async(req) => {
+        const { motivo } = req.params
+        const response = await callSPWithCallback('Call GEN_consultaIdMotivo(?)', motivo)
+        .then((response) => ResponseBodyBuilder(200, false , response))
+        .catch((err) => ResponseBodyBuilder(500, true , err))
+        return response;
+    },
+
 }
 
 export default otherMiddleWare;
