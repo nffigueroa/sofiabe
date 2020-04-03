@@ -12,7 +12,7 @@ export const middlewareProvider = {
     },
     insertProvider: async(req) => {
         const { idSucursal } = req.params
-        const newProvider =  new CreateNewProvider({...req.body, id_sucursal: idSucursal});
+        const newProvider =  new CreateNewProvider(req.body);
         const response = await callSPWithCallback('Call PRO_consultaLlenarTablaProveedor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', newProvider)
         .then((response) => ResponseBodyBuilder(200, false , response))
         .catch((err) => ResponseBodyBuilder(500, true , err))

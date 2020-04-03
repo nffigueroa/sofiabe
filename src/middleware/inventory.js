@@ -22,29 +22,28 @@ export const middlewareInventory = {
         .catch((err) => ResponseBodyBuilder(500, true , err))
         return response;
     },
-    getInventory: () => {
+    getInventory: async() => {
         const { idSucursal } = req.params
         const response = await callSPWithCallback('Call IVN_llenarTabla_inventario(?)', idSucursal)
         .then((response) => ResponseBodyBuilder(200, false , response))
         .catch((err) => ResponseBodyBuilder(500, true , err))
         return response;
     },
-    insertProductIntoInventory: () => {
-        const { idSucursal } = req.params
-        const newinventoryProduct = new CreateProductInventory({...req.body, id_sucursal: idSucursal});    
+    insertProductIntoInventory: async(req) => {
+        const newinventoryProduct = new CreateProductInventory(req.body);    
         const response = await callSPWithCallback('Call IVN_consultaRegistrarProductoInventario(?,?,?,?,?,?,?,?,?,?,?,?,?)', newinventoryProduct)
         .then((response) => ResponseBodyBuilder(200, false , response))
         .catch((err) => ResponseBodyBuilder(500, true , err))
         return response; 
     },
-    getIdProductByname: () => {
+    getIdProductByname: async() => {
         const { producto } = req.body
         const response = await callSPWithCallback('Call IVN_consultaIdProducto(?)', producto)
         .then((response) => ResponseBodyBuilder(200, false , response))
         .catch((err) => ResponseBodyBuilder(500, true , err))
         return response; 
     },
-    updateInventoryProduct: () => {
+    updateInventoryProduct: async() => {
         const json = {
             id_producto,
             cantidad,
@@ -65,14 +64,14 @@ export const middlewareInventory = {
         .catch((err) => ResponseBodyBuilder(500, true , err))
         return response; 
     },
-    removeInventoryproduct: () => {
+    removeInventoryproduct: async() => {
         const { idProducto } = req.body
         const response = await callSPWithCallback('Call IVN_consultaEliminarProductoInventario(?)', idProducto)
         .then((response) => ResponseBodyBuilder(200, false , response))
         .catch((err) => ResponseBodyBuilder(500, true , err))
         return response; 
     },
-    registerDeletedProduct: () => {
+    registerDeletedProduct: async() => {
         const { id_producto_inventario,  descripcion, id_usuario, id_motivo} = req.body
         const response = await callSPWithCallback('Call GEN_consultaRegistrarProductoEliminado(?, ?, ?, ?)', [id_producto_inventario,  descripcion, id_usuario, id_motivo])
         .then((response) => ResponseBodyBuilder(200, false , response))

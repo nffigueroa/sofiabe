@@ -38,6 +38,7 @@ app.delete(`/${API_VERSION}/product/:idProducto`, (req, res, next) => Response(r
 app.get(`/${API_VERSION}/client/:idSucursal`, (req, res, next) => Response(req, res, next, clientMiddleware.getClients));
 app.delete(`/${API_VERSION}/client/:idClient`, (req, res, next) => Response(req, res, next, clientMiddleware.deleteClient));
 app.post(`/${API_VERSION}/client`, (req, res, next) => Response(req, res, next, clientMiddleware.createNewClient));
+app.put(`/${API_VERSION}/client`, (req, res, next) => Response(req, res, next, clientMiddleware.createNewClient));
 
 
 /** User API */
