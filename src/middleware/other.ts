@@ -1,71 +1,95 @@
-
-import { callSPWithCallback } from '../network';
-import { ResponseBodyBuilder } from '../models/responseBody';
+import { callSPWithCallback } from "../network";
+import { ResponseBodyBuilder } from "../models/responseBody";
 
 const otherMiddleWare = {
-    getCategories: async(req: any, res: any, next: any) => {
-        const response = await callSPWithCallback('Call GEN_consultaLLenarComboCategoria()', '')
-        return {
-            status: 200,
-            body: response
-        }
-    },
-    getMarks: async(req: any, res: any, next: any) => {
-        const response = await callSPWithCallback('Call GEN_consultaLLenarComboMarca()','')
-        return {
-            status: 200,
-            body: response
-        }
-    },
-    getPresentations: async(req: any, res: any, next: any) => {
-        const response = await callSPWithCallback('Call GEN_consultaLLenarComboPresentacion()',  '')
-        return {
-            status: 200,
-            body: response
-        }
-    },
-    getMeasurements: async(req: any, res: any, next: any) => {
-        const response = await callSPWithCallback('Call GEN_consultaLLenarComboMedicion()',  '');
-        return {
-            status: 200,
-            body: response
-        }
-    },
-    getCities: async(req: any, res: any, next: any) => {
-        const response = await callSPWithCallback('Call GEN_llenarComboCidad_Mi_Sucursal()', '')
-        return {
-            status: 200,
-            body: response
-        }
-    },
-    getIdCompnay: async(req: any) => {
-        const { idSucursal } = req.params
-        const response = await callSPWithCallback('Call GEN_consultaIdEmpresa(?)', idSucursal)
-        .then((response) => ResponseBodyBuilder(200, false , response))
-        .catch((err) => ResponseBodyBuilder(500, true , err))
-        return response;
-    },
-    getSucursalsByCompany: async(req: any) => {
-        const { idEmpresa } = req.params
-        const response = await callSPWithCallback('Call GEN_consultaLlenarComboSucursal(?)', idEmpresa)
-        .then((response) => ResponseBodyBuilder(200, false , response))
-        .catch((err) => ResponseBodyBuilder(500, true , err))
-        return response;
-    },
-    getReasonForElimination: async() => {
-        const response = await callSPWithCallback('Call GEN_consultaMotivosEliminacion()')
-        .then((response) => ResponseBodyBuilder(200, false , response))
-        .catch((err) => ResponseBodyBuilder(500, true , err))
-        return response;
-    },
-    getIdReasons: async(req: any) => {
-        const { motivo } = req.params
-        const response = await callSPWithCallback('Call GEN_consultaIdMotivo(?)', motivo)
-        .then((response) => ResponseBodyBuilder(200, false , response))
-        .catch((err) => ResponseBodyBuilder(500, true , err))
-        return response;
-    },
-
-}
+  getCategories: async () => {
+    const response = await callSPWithCallback(
+      "Call GEN_consultaLLenarComboCategoria()",
+      ""
+    );
+    return {
+      status: 200,
+      body: response,
+    };
+  },
+  getMarks: async () => {
+    const response = await callSPWithCallback(
+      "Call GEN_consultaLLenarComboMarca()",
+      ""
+    );
+    return {
+      status: 200,
+      body: response,
+    };
+  },
+  getPresentations: async () => {
+    const response = await callSPWithCallback(
+      "Call GEN_consultaLLenarComboPresentacion()",
+      ""
+    );
+    return {
+      status: 200,
+      body: response,
+    };
+  },
+  getMeasurements: async () => {
+    const response = await callSPWithCallback(
+      "Call GEN_consultaLLenarComboMedicion()",
+      ""
+    );
+    return {
+      status: 200,
+      body: response,
+    };
+  },
+  getCities: async () => {
+    const response = await callSPWithCallback(
+      "Call GEN_llenarComboCidad_Mi_Sucursal()",
+      ""
+    );
+    return {
+      status: 200,
+      body: response,
+    };
+  },
+  getIdCompnay: async (req: any) => {
+    const { idSucursal } = req.params;
+    const response = await callSPWithCallback(
+      "Call GEN_consultaIdEmpresa(?)",
+      idSucursal
+    )
+      .then((response) => ResponseBodyBuilder(200, false, response))
+      .catch((err) => ResponseBodyBuilder(500, true, err));
+    return response;
+  },
+  getSucursalsByCompany: async (req: any) => {
+    const { idEmpresa } = req.params;
+    const response = await callSPWithCallback(
+      "Call GEN_consultaLlenarComboSucursal(?)",
+      idEmpresa
+    )
+      .then((response) => ResponseBodyBuilder(200, false, response))
+      .catch((err) => ResponseBodyBuilder(500, true, err));
+    return response;
+  },
+  getReasonForElimination: async () => {
+    const response = await callSPWithCallback(
+      "Call GEN_consultaMotivosEliminacion()"
+    )
+      .then((response) => ResponseBodyBuilder(200, false, response))
+      .catch((err) => ResponseBodyBuilder(500, true, err));
+    return response;
+  },
+  getIdReasons: async (req: any) => {
+    const { motivo } = req.params;
+    const response = await callSPWithCallback(
+      "Call GEN_consultaIdMotivo(?)",
+      motivo
+    )
+      .then((response) => ResponseBodyBuilder(200, false, response))
+      .catch((err) => ResponseBodyBuilder(500, true, err));
+    return response;
+  },
+};
 
 export default otherMiddleWare;
