@@ -3,7 +3,7 @@ import { callSPWithCallback } from "../network";
 
 import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
-import { ResponseBody, ResponseBodyBuilder } from "../models/responseBody";
+import { ResponseBodyBuilder } from "../models/responseBody";
 
 const userMiddleware = {
   getPasswordByUserName: async (userName: string) => {
