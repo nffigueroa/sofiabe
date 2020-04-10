@@ -3,28 +3,32 @@ import { callSPWithCallback } from '../network';
 
 import bcrypt from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import { ResponseBody, ResponseBodyBuilder } from "../models/responseBody";
 
 
 const userMiddleware = {
-    getUserById: (req, res, next) => {
-        con.getConnection((err, connection) => {
+    getUserById: (req: any, res: any, next: any) => {
+        con.getConnection((err: any, connection: any) => {
             if (err) throw err;
-            connection.query('', [1], (err, result) => {
+            connection.query('', [1], (err: any, result: any) => {
                 res.send(JSON.stringify(result[0]));
             })
         })
     },
-    getPasswordByUserName: async (userName) => {
-        return await callSPWithCallback('Call US_consultasPassword(?)', userName).then(dbResponse => dbResponse[0].password)
+    getPasswordByUserName: async (userName: string) => {
+        return await callSPWithCallback('Call US_consultasPassword(?)', userName).then((dbResponse: any) => dbResponse[0] ? dbResponse[0].password : undefined)
     },
-    getUserProperties: async (userName) => {
-        return await callSPWithCallback('Call US_consultasDatosLogeoUsuario(?)',  userName).then(dbResponse => dbResponse[0])
+    getUserProperties: async (userName: string) => {
+        return await callSPWithCallback('Call US_consultasDatosLogeoUsuario(?)',  userName).then((dbResponse: any) => dbResponse[0])
     },
-    loginProcess: async ({ body }, res, next) => {
+    loginProcess: async ( {body}: any , res: any, next: any) => {
         const { userName, password } = body;
         try {
             return userMiddleware.getPasswordByUserName(userName)
                 .then(async (passwordFromBd) => {
+                    if (!passwordFromBd) {
+                        return ResponseBodyBuilder(401, false, {message: 'Not authtorized'})
+                    }
                     const matches = await bcrypt.compare(password, passwordFromBd);
                     if (matches) {
                         return {

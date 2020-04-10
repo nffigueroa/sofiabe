@@ -1,18 +1,18 @@
 import { callSPWithCallback } from "../network"
-import { ResponseBodyBuilder } from "../models/response"
-import { CreateNewProvider } from "../models/createNewProvider"
+import { ResponseBodyBuilder } from "../models/responseBody"
+import { Provider } from "../models/Provider"
 
 export const middlewareProvider = {
-    getProviders: async(req) => {
+    getProviders: async(req: any) => {
         const { idSucursal } = req.params
         const response = await callSPWithCallback('Call PRO_consultaLlenarTablaProveedor(?)', idSucursal)
         .then((response) => ResponseBodyBuilder(200, false , response))
         .catch((err) => ResponseBodyBuilder(500, true , err))
         return response;
     },
-    insertProvider: async(req) => {
+    insertProvider: async(req: any) => {
         const { idSucursal } = req.params
-        const newProvider =  new CreateNewProvider(req.body);
+        const newProvider: Provider =  req.body;
         const response = await callSPWithCallback('Call PRO_consultaLlenarTablaProveedor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', newProvider)
         .then((response) => ResponseBodyBuilder(200, false , response))
         .catch((err) => ResponseBodyBuilder(500, true , err))

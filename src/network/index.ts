@@ -7,10 +7,10 @@ import connection from './mysql';
  * @param {*} storeProcedureNameAndParams Script in mysql calling the sp
  * @param  {...any} params All params that the query needs.
  */
-export const callSPWithCallback = (storeProcedureNameAndParams, ...params) => {
+export const callSPWithCallback = (storeProcedureNameAndParams: any, ...params: any) => {
     try {
         return new Promise((resolve, reject) => {
-            connection.query(storeProcedureNameAndParams, params, (err, results) => {
+            connection.query(storeProcedureNameAndParams, params, (err: any, results: any) => {
                 if (err || !results) {
                     return reject(err);
                 }
@@ -23,9 +23,9 @@ export const callSPWithCallback = (storeProcedureNameAndParams, ...params) => {
     }
 }
 
-export const callSPWithNotCallback = (storeProcedureNameAndParams, ...params) => {
+export const callSPWithNotCallback = (storeProcedureNameAndParams: any, ...params: any) => {
     try {
-        con.query(storeProcedureNameAndParams, params, (err, result) => {
+        connection.query(storeProcedureNameAndParams, params, (err: any, result: any) => {
             if (err) throw err;
         }) 
     } catch (error) {

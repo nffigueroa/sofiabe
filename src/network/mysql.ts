@@ -1,6 +1,6 @@
 import mysql from 'mysql';
 
-let  connection = null;
+let  connection: any = null;
 const conexion = () => {
     if (!connection) {
         connection = mysql.createConnection({
@@ -10,13 +10,13 @@ const conexion = () => {
         database: 'swincomc_20140512_siventas'
         });
     }
-    connection.connect((err) => {
+    connection.connect((err: any) => {
        if (err) {
         console.error('[db err', err);
         setTimeout(() => conexion, 2000);
        }
     })
-    connection.on('error', err => {
+    connection.on('error', (err: any) => {
         console.error('[db err', err);
         if (err.code === 'PROTOCOL_CONNECTION_LOST') {
             conexion();
