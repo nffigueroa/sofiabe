@@ -87,7 +87,7 @@ export const middlewareInventory = {
       .catch((err: any) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  registerDeletedProduct: async (req: any) => {
+  insertDeletedProduct: async (req: any) => {
     const {
       id_producto_inventario,
       descripcion,
@@ -97,6 +97,16 @@ export const middlewareInventory = {
     const response = await callSPWithCallback(
       "Call GEN_consultaRegistrarProductoEliminado(?, ?, ?, ?)",
       [id_producto_inventario, descripcion, id_usuario, id_motivo]
+    )
+      .then((response: any) => ResponseBodyBuilder(200, false, response))
+      .catch((err: any) => ResponseBodyBuilder(500, true, err));
+    return response;
+  },
+  getFullInventoryByCompany: async (req: any) => {
+    const { idEmpresa } = req.body;
+    const response = await callSPWithCallback(
+      "Call IVN_llenarTabla_inventarioStock(?)",
+      idEmpresa
     )
       .then((response: any) => ResponseBodyBuilder(200, false, response))
       .catch((err: any) => ResponseBodyBuilder(500, true, err));

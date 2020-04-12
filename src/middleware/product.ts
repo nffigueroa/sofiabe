@@ -9,10 +9,7 @@ const middlewares = {
       "Call IVN_llenarTabla_Producto(?)",
       idSucursal
     );
-    return {
-      status: 200,
-      body: response,
-    };
+    return ResponseBodyBuilder(200, false, response);
   },
   deleteProduct: async (req: any) => {
     let idProducto = req.params.idProducto;
@@ -21,20 +18,14 @@ const middlewares = {
       idProducto
     )
       .then((response) => {
-        return {
-          status: 200,
-          body: {
-            propertyRemoved: !!response,
-          },
-        };
+        return ResponseBodyBuilder(200, false, {
+          propertyRemoved: !!response,
+        });
       })
       .catch((err) => {
-        return {
-          status: 500,
-          body: {
-            message: "deleteProduct err: " + err,
-          },
-        };
+        return ResponseBodyBuilder(500, true, {
+          message: "deleteProduct err: " + err,
+        });
       });
     return body;
   },
