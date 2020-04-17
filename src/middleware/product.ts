@@ -1,6 +1,7 @@
 import { getDateYYYYMMDD, registerMovements } from "../util/common";
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
+import { Product } from "../models/Product";
 
 const middlewares = {
   getProducts: async (req: any) => {
@@ -31,7 +32,6 @@ const middlewares = {
   },
   saveProduct: async (req: any) => {
     const product_body = req.body;
-
     const body = await callSPWithCallback(
       "Call IVN_registrarProducto(?, ?, ?, ?, ?, ?, ?, ?)",
       product_body.product_name,
@@ -56,26 +56,30 @@ const middlewares = {
     return body;
   },
   updateProduct: async (req: any) => {
-    const product_body = req.body;
-    registerMovements({
-      id_usuario: product_body.product_creation_user,
-      descripcion: `updateProduct con id ${product_body.product_id_producto}`,
-    });
-    const response = await callSPWithCallback(
-      "Call IVN_consultaActualizarProducto(?, ?, ?, ?, ?, ?)",
-      [
-        product_body.product_id_producto,
-        product_body.product_name,
-        product_body.product_category,
-        product_body.product_mark,
-        product_body.product_measurement,
-        product_body.product_presentation,
-      ]
-    );
-    return {
-      status: 200,
-      body: response,
-    };
+    const product_body = req.body as Product;
+    console.log(product_body);
+    try {
+      registerMovements({
+        proccess: "updateProduct",
+        id_usuario: product_body.id_usuario,
+        descripcion: `updateProduct con id ${product_body.id_Produccto}`,
+      });
+      const response = await callSPWithCallback(
+        "Call IVN_consultaActualizarProducto(?, ?, ?, ?, ?, ?)",
+        product_body.id_Produccto,
+        product_body.nombre_producto,
+        product_body.id_categoria,
+        product_body.id_marca,
+        product_body.id_medicion,
+        product_body.id_presentacion
+      );
+      return {
+        status: 200,
+        body: response,
+      };
+    } catch (error) {
+      throw error;
+    }
   },
 };
 
