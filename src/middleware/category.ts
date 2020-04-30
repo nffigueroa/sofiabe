@@ -13,4 +13,13 @@ export const categoryMiddleWare = {
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
+  getCategories: async () => {
+    const response = await callSPWithCallback(
+      "Call GEN_consultaLLenarComboCategoria()",
+      ""
+    )
+      .then((data) => ResponseBodyBuilder(200, false, data))
+      .catch((err) => ResponseBodyBuilder(500, true, err));
+    return response;
+  },
 };

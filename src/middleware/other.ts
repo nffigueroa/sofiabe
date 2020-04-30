@@ -90,6 +90,16 @@ const otherMiddleWare = {
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
+  getAllSucursalsByCompany: async (req: any) => {
+    const { idEmpresa } = req.params;
+    const response = await callSPWithCallback(
+      "Call GEN_consultaSucursalXEmpresa(?)",
+      idEmpresa
+    )
+      .then((response) => ResponseBodyBuilder(200, false, response))
+      .catch((err) => ResponseBodyBuilder(500, true, err));
+    return response;
+  },
 };
 
 export default otherMiddleWare;

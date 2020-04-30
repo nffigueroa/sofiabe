@@ -1,6 +1,7 @@
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
 import { Provider } from "../models/Provider";
+import { getDateYYYYMMDD, getCurrentTime } from "../util/common";
 
 export const middlewareProvider = {
   getProviders: async (req: any) => {
@@ -14,22 +15,37 @@ export const middlewareProvider = {
     return response;
   },
   insertProvider: async (req: any) => {
-    const { idSucursal } = req.params;
     const newProvider: Provider = req.body;
+    newProvider.fecha_crea = getDateYYYYMMDD()
     const response = await callSPWithCallback(
-      "Call PRO_consultaLlenarTablaProveedor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      newProvider
+      "Call PRO_consultaInsertarProveedor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      newProvider.empresa,
+      newProvider.contaco_empresa,
+      newProvider.telefono_proveedor,
+      newProvider.direccion_proveedor,
+      newProvider.mail_proveedor,
+      newProvider.id_ciudad,
+      newProvider.nit_proveedor,
+      newProvider.id_usuario,
+      newProvider.fecha_crea,
+      newProvider.id_sucursal
     )
       .then((response) => ResponseBodyBuilder(200, false, response))
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
   updateProvider: async (req: any) => {
-    const { idSucursal } = req.params;
     const provider: Provider = req.body;
     const response = await callSPWithCallback(
       "Call GEN_consultaModificarProveedor(?,?,?,?,?,?,?,?)",
-      provider
+      provider.id_proveedor,
+      provider.empresa,
+      provider.contaco_empresa,
+      provider.telefono_proveedor,
+      provider.direccion_proveedor,
+      provider.mail_proveedor,
+      provider.id_ciudad,
+      provider.nit_proveedor
     )
       .then((response) => ResponseBodyBuilder(200, false, response))
       .catch((err) => ResponseBodyBuilder(500, true, err));
@@ -46,10 +62,10 @@ export const middlewareProvider = {
     return response;
   },
   deleteProvider: async (req: any) => {
-    const { id_proveedor } = req.params;
+    const { idProvider } = req.params;
     const response = await callSPWithCallback(
       "Call GEN_eliminar_proveedor(?)",
-      id_proveedor
+      idProvider
     )
       .then((response) => ResponseBodyBuilder(200, false, response))
       .catch((err) => ResponseBodyBuilder(500, true, err));

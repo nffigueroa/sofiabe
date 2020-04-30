@@ -17,26 +17,33 @@ const clientMiddleware = {
     return response;
   },
   createNewClient: async (req: any) => {
-    const bodyCereateNewClient: Client = req.body;
+    const bodyCereateNewClient = req.body as Client;
+   // registerMovements({process: 'createNewClient', id_usuario:  bodyCereateNewClient.id_usuario, descripcion: `Se registra cliente id_usuario: ${bodyCereateNewClient.id_usuario}`})
     const response = await callSPWithCallback(
-      "Call CLI_registrarCliente(?,?,?,?,?,?,?,?,?)",
-      bodyCereateNewClient.idSucursal,
-      bodyCereateNewClient.nombre,
-      bodyCereateNewClient.apellido,
-      bodyCereateNewClient.telefono,
-      bodyCereateNewClient.direccion,
-      bodyCereateNewClient.mail,
+      "Call CLI_registrarCliente(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+      bodyCereateNewClient.id_sucursal,
+      bodyCereateNewClient.nombre_cliente,
+      bodyCereateNewClient.apellido_cliente,
+      bodyCereateNewClient.telefono_cliente,
+      bodyCereateNewClient.direccion_cliente,
+      bodyCereateNewClient.mail_cliente,
       bodyCereateNewClient.id_ciudad,
       bodyCereateNewClient.id_usuario,
-      bodyCereateNewClient.iden,
-      bodyCereateNewClient.tipoCliente,
+      bodyCereateNewClient.cedula_cliente,
+      bodyCereateNewClient.esJuridico,
       bodyCereateNewClient.declaraIva,
       bodyCereateNewClient.declaraIca,
       bodyCereateNewClient.reteFuente,
       bodyCereateNewClient.milesIca,
       bodyCereateNewClient.dv
     )
-      .then((response) => ResponseBodyBuilder(200, false, response))
+      .then((response: any) => {
+        console.log(response)
+        //registerMovements({process: 'createNewClient', id_usuario:  bodyCereateNewClient.id_usuario, descripcion: `Registro de cliente exitoso id_cliente: ${response.id_cliente}`})
+        return ResponseBodyBuilder(200, false, {
+          ...response[0],
+        })
+      })
       .catch((error) => ResponseBodyBuilder(500, false, error));
     return response;
   },
@@ -57,17 +64,17 @@ const clientMiddleware = {
     return response;
   },
   updateClient: async (req: any) => {
-    //const client = Object.assign(payLoad, req.body);
-    const idClient = req.params.idClient;
+    const clientUpdated = req.body as Client;
+    console.log(clientUpdated)
     const response = await callSPWithCallback(
-      "Call CLI_eliminar_Cliente(?, ?, ? , ?, ? , ?, ?)",
-      req
+      "Call CLI_consultaActualizarCliente(?, ?, ? , ?, ? , ?, ?)",
+      clientUpdated
     )
       .then((response) => {
         if (response) {
           return ResponseBodyBuilder(200, false, !!response);
         } else {
-          return ResponseBodyBuilder(404, true, `Can not find id ${idClient}`);
+          return ResponseBodyBuilder(404, true, `Can not find id ${clientUpdated.id_cliente}`);
         }
       })
       .catch((error) => ResponseBodyBuilder(500, false, error));

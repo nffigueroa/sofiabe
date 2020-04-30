@@ -31,21 +31,22 @@ const middlewares = {
     return body;
   },
   saveProduct: async (req: any) => {
-    const product_body = req.body;
+    const id_sucursal = req.param.idSucursal;
+    const product_body = req.body as Product;
     const body = await callSPWithCallback(
       "Call IVN_registrarProducto(?, ?, ?, ?, ?, ?, ?, ?)",
-      product_body.product_name,
+      product_body.nombre_producto,
       getDateYYYYMMDD(),
-      product_body.product_creation_user,
-      product_body.product_category,
-      product_body.product_mark,
-      product_body.product_measurement,
-      product_body.product_presentation,
-      product_body.product_id_sucursal
+      product_body.id_usuario,
+      product_body.id_categoria,
+      product_body.id_marca,
+      product_body.id_medicion,
+      product_body.id_presentacion,
+      id_sucursal
     )
       .then((idProductoCreated: any) => {
         return ResponseBodyBuilder(200, false, {
-          id_produccto: idProductoCreated[0].l_product_id,
+          ...idProductoCreated[0],
         });
       })
       .catch((err) => {

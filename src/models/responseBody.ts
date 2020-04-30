@@ -4,7 +4,7 @@ export interface ResponseBody {
     body: object | any
 }
 
-export const ResponseBodyBuilder = (status: any, error: any, body: any): ResponseBody => {
+export const ResponseBodyBuilder = (status: number, error: boolean, body: any): ResponseBody => {
     const responseBody: ResponseBody = {
       status,
       error,
