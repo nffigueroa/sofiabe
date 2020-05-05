@@ -2,8 +2,10 @@ import con from "../network/mysql";
 import { callSPWithCallback } from "../network";
 
 import bcrypt from "bcrypt";
-import { sign } from "jsonwebtoken";
 import { ResponseBodyBuilder } from "../models/responseBody";
+import { key } from "../util/const";
+import { User } from "../models/User";
+import { sign } from "../util/common";
 
 const userMiddleware = {
   getPasswordByUserName: async (userName: string) => {
@@ -33,16 +35,17 @@ const userMiddleware = {
           }
           const matches = await bcrypt.compare(password, passwordFromBd);
           if (matches) {
+            const userProperties: User = await userMiddleware.getUserProperties(
+              userName
+            );
             return ResponseBodyBuilder(200, false, {
-              body: {
-                token: sign(
-                  { user: userName },
-                  "{ user: userName }swincomc_20140512_siventas"
-                ),
-                userProperties: await userMiddleware.getUserProperties(
-                  userName
-                ),
-              },
+              ...{ 
+                nombre_usuario: userProperties.nombre_usuario, 
+                apellido_usuario: userProperties.apellido_usuario, 
+                cc_usuario: userProperties.telefono_usuario,
+                telefono_usuario: userProperties.telefono_usuario,
+                token: sign(Object.assign({}, userProperties))
+              }
             });
           } else {
             return ResponseBodyBuilder(401, true, {

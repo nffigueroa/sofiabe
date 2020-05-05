@@ -29,9 +29,14 @@ app.all("/*", (req: any, res: any, next: any) => {
 
 /** Provider API */
 app.get(
-  `/${API_VERSION}/provider/:idSucursal`,
+  `/${API_VERSION}/provider`,
   (req: any, res: any, next: any) =>
     Response(req, res, next, middlewareProvider.getProviders)
+);
+app.get(
+  `/${API_VERSION}/provider/categories/:id_proveedor`,
+  (req: any, res: any, next: any) =>
+    Response(req, res, next, middlewareProvider.getProviderCategories)
 );
 app.put(`/${API_VERSION}/provider`, (req: any, res: any, next: any) =>
   Response(req, res, next, middlewareProvider.updateProvider)
@@ -45,12 +50,12 @@ app.delete(`/${API_VERSION}/provider/:idProvider`, (req: any, res: any, next: an
 
 /*Product API*/
 app.get(
-  `/${API_VERSION}/product/:idSucursal`,
+  `/${API_VERSION}/product`,
   (req: any, res: any, next: any) =>
     Response(req, res, next, middlewares.getProducts)
 );
 app.post(
-  `/${API_VERSION}/product/:idSucursal`,
+  `/${API_VERSION}/product`,
   (req: any, res: any, next: any) =>
     Response(req, res, next, middlewares.saveProduct)
 );
@@ -64,7 +69,7 @@ app.delete(
 );
 
 /** Client API */
-app.get(`/${API_VERSION}/client/:idSucursal`, (req: any, res: any, next: any) =>
+app.get(`/${API_VERSION}/client`, (req: any, res: any, next: any) =>
   Response(req, res, next, clientMiddleware.getClients)
 );
 app.delete(
@@ -81,7 +86,7 @@ app.put(`/${API_VERSION}/client`, (req: any, res: any, next: any) =>
 
 /** User API */
 app.post(`/${API_VERSION}/auth`, (req: any, res: any, next: any) =>
-  Response(req, res, next, userMiddleware.loginProcess)
+  Response(req, res, next, userMiddleware.loginProcess, false)
 );
 
 /** Category API */
@@ -113,7 +118,7 @@ app.get(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =>
 app.get(`/${API_VERSION}/other/cities`, (req: any, res: any, next: any) =>
   Response(req, res, next, otherMiddleWare.getCities)
 );
-app.get(`/${API_VERSION}/other/company/sucursal/:idEmpresa`, (req: any, res: any, next: any) =>
+app.get(`/${API_VERSION}/other/company/sucursal`, (req: any, res: any, next: any) =>
   Response(req, res, next, otherMiddleWare.getAllSucursalsByCompany)
 );
 

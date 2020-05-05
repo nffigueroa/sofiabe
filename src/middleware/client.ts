@@ -1,14 +1,14 @@
 import { callSPWithCallback } from "../network";
 import { Client } from "../models/Client";
 import { ResponseBodyBuilder } from "../models/responseBody";
-import { registerMovements } from "../util/common";
+import { decode } from "jsonwebtoken";
 
 const clientMiddleware = {
-  getClients: async (req: any) => {
-    const idSucursal = req.params.idSucursal;
+  getClients: async (req: any, token: string) => {
+    const { data: { id_sucursal } }: any = decode(token);
     const response = await callSPWithCallback(
       "Call CLI_llenarTabla_Cliente(?)",
-      idSucursal
+      id_sucursal
     )
       .then((response) => ResponseBodyBuilder(200, false, response))
       .catch((err) =>

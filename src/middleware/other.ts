@@ -1,5 +1,6 @@
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
+import { decode } from "jsonwebtoken";
 
 const otherMiddleWare = {
   getCategories: async () => {
@@ -90,11 +91,11 @@ const otherMiddleWare = {
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  getAllSucursalsByCompany: async (req: any) => {
-    const { idEmpresa } = req.params;
+  getAllSucursalsByCompany: async (req: any, token: any) => {
+    const { data: { id_empresa } }: any = decode(token);
     const response = await callSPWithCallback(
       "Call GEN_consultaSucursalXEmpresa(?)",
-      idEmpresa
+      id_empresa
     )
       .then((response) => ResponseBodyBuilder(200, false, response))
       .catch((err) => ResponseBodyBuilder(500, true, err));

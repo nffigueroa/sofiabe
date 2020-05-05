@@ -1,22 +1,33 @@
+import { verifyToken } from "./token";
 export const Response = async (
   req: any,
   res: any,
   next: any,
-  middleware: any
+  middleware: any,
+  isToken = true
 ) => {
   try {
-    const middleWareResponse = await middleware(req);
-    if ([200, 201].find((element) => element === middleWareResponse.status)) {
-      res.status(middleWareResponse.status).send({
-        status: middleWareResponse.status,
-        error: false,
-        body: middleWareResponse.body,
-      });
+    if (verifyToken(req, res, isToken)) {
+      const token = req.headers["access-token"];
+      const middleWareResponse = await middleware(req, token);
+      if ([200, 201].find((element) => element === middleWareResponse.status)) {
+        res.status(middleWareResponse.status).send({
+          status: middleWareResponse.status,
+          error: false,
+          body: middleWareResponse.body,
+        });
+      } else {
+        res.status(middleWareResponse.status).send({
+          status: middleWareResponse.status,
+          error: true,
+          body: middleWareResponse.body,
+        });
+      }
     } else {
-      res.status(middleWareResponse.status).send({
-        status: middleWareResponse.status,
+      res.status(401).send({
+        status: 401,
         error: true,
-        body: middleWareResponse.body,
+        body: "Not Authorized",
       });
     }
   } catch (error) {

@@ -1,14 +1,16 @@
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
 import { Provider } from "../models/Provider";
-import { getDateYYYYMMDD, getCurrentTime } from "../util/common";
+import { getDateYYYYMMDD, getCurrentTime, verifyJWT } from "../util/common";
+import { User } from "../models/User";
+import { decode } from "jsonwebtoken";
 
 export const middlewareProvider = {
-  getProviders: async (req: any) => {
-    const { idSucursal } = req.params;
+  getProviders: async (req: any, token: string) => {
+    const {data: {id_sucursal}}: any = decode(token);
     const response = await callSPWithCallback(
       "Call PRO_consultaLlenarTablaProveedor(?)",
-      idSucursal
+      id_sucursal
     )
       .then((response) => ResponseBodyBuilder(200, false, response))
       .catch((err) => ResponseBodyBuilder(500, true, err));
@@ -51,7 +53,7 @@ export const middlewareProvider = {
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  getProviderCategories: async (req: any) => {
+  getProviderCategories: async (req: any, token: string) => {
     const { id_proveedor } = req.params;
     const response = await callSPWithCallback(
       "Call GEN_CategoriasProveedorConsultar(?)",

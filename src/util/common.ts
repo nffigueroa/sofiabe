@@ -1,5 +1,7 @@
 import { callSPWithNotCallback, callSPWithCallback } from "../network";
-import jwt from "jsonwebtoken";
+import * as jwtLibrady from "jsonwebtoken";
+import { User } from "../models/User";
+import { key } from "./const";
 
 var moment = require("moment");
 
@@ -31,5 +33,7 @@ export const registerMovements = ({
 };
 
 export const sign = (data: any) => {
-  return jwt.sign(data, "swincomc_20140512_siventas");
+  return jwtLibrady.sign({ data, exp: Math.floor(Date.now() / 1000) + (60 * 60) }, key);
 };
+
+export const verifyJWT = (jwt: string): User => jwtLibrady.verify(jwt, key) as User

@@ -1,14 +1,16 @@
-import { getDateYYYYMMDD, registerMovements } from "../util/common";
+import { getDateYYYYMMDD, registerMovements, verifyJWT } from "../util/common";
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
 import { Product } from "../models/Product";
+import { User } from "../models/User";
+import { decode } from "jsonwebtoken";
 
 const middlewares = {
-  getProducts: async (req: any) => {
-    const idSucursal = req.params.idSucursal;
+  getProducts: async (req: any, token: string) => {
+    const { data: { id_sucursal } }: any = decode(token);
     const response = await callSPWithCallback(
       "Call IVN_llenarTabla_Producto(?)",
-      idSucursal
+      id_sucursal
     );
     return ResponseBodyBuilder(200, false, response);
   },
