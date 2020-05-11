@@ -1,52 +1,43 @@
+import { Presentation } from "../models/Presentation";
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
 
-export const billMiddleware = {
-  getBillTable: async (req: any) => {
-    const { idSucursal, fechaLog, fechaHasta, ban } = req.body;
+export const presentationMiddleware = {
+  getPresentation: async () => {
     const response = await callSPWithCallback(
-      "Call CON_consultaLlenarTablaFactura(?,?,?,?)",
-      idSucursal,
-      fechaLog,
-      fechaHasta,
-      ban
+      "Call GEN_consultaLLenarComboPresentacion()",
+      ""
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  firstDateBill: async (req: any) => {
-    const { idSucursal } = req.body;
+  insertPresentation: async (req: any) => {
+    const presentation = req.body as Presentation;
     const response = await callSPWithCallback(
-      "Call CON_consultaPrimerFechaFactura(?)",
-      idSucursal
+      "Call GEN_consultaRegistrarPresentacion(?, ?)",
+      presentation.presentacion
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  getBillDetails: async (req: any) => {
-    const { idFactura } = req.body;
+  deletetPresentation: async (req: any) => {
+    const presentation = req.params.id_presentacion;
     const response = await callSPWithCallback(
-      "Call GEN_consultaLlenarArticulos(?)",
-      idFactura
+      "Call GEN_consultaEliminarPresentacion(?)",
+      presentation
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  cancelBill: async (req: any) => {
-    //TODO Calculate fechaLog and horaLog
-    const { idFactura, idMotivo, idUsuario } = req.body;
-    const fechaLog = "";
-    const horaLog = "";
+  updatetPresentacion: async (req: any) => {
+    const presentation = req.body as Presentation;
     const response = await callSPWithCallback(
-      "Call CON_consultaRegistrarFacturaAnulada(?,?,?,?,?)",
-      idFactura,
-      idMotivo,
-      idUsuario,
-      fechaLog,
-      horaLog
+      "Call GEN_consultaModificarPresentacion(?, ?)",
+      presentation.idPresentacion,
+      presentation.presentacion
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
