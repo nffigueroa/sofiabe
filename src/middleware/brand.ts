@@ -5,7 +5,7 @@ import { ResponseBodyBuilder } from "../models/responseBody";
 export const brandMiddleware = {
   getBrand: async () => {
     const response = await callSPWithCallback(
-      "Call GEN_consultaLLenarComboPresentacion()",
+      "Call GEN_consultaLLenarComboMarca()",
       ""
     )
       .then((data) => ResponseBodyBuilder(200, false, data))

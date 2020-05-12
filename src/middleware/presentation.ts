@@ -13,10 +13,10 @@ export const presentationMiddleware = {
     return response;
   },
   insertPresentation: async (req: any) => {
-    const presentation = req.body as Presentation;
+    const presentation = req.body.presentacion;
     const response = await callSPWithCallback(
-      "Call GEN_consultaRegistrarPresentacion(?, ?)",
-      presentation.presentacion
+      "Call GEN_consultaRegistrarPresentacion(?)",
+      presentation
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));

@@ -43,13 +43,15 @@ export const categoryMiddleWare = {
     )
       .then((response) => {
         if (response) {
-          return ResponseBodyBuilder(200, false, !!response);
-        } else {
           return ResponseBodyBuilder(
             404,
             true,
-            `Can not find id ${category.nombreCategoria}`
-          );
+            `Can not find id ${category.nombreCategoria}`);
+          
+        } else {
+          
+            return ResponseBodyBuilder(200, false, !!response);
+          
         }
       })
       .catch((err) => ResponseBodyBuilder(500, true, err));
