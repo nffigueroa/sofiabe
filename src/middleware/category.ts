@@ -1,4 +1,4 @@
-import { Category, IdCategory } from "../models/Category";
+import { Category } from "../models/Category";
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
 
@@ -16,8 +16,8 @@ export const categoryMiddleWare = {
     const category: Category = req.body;
     const response = await callSPWithCallback(
       "Call GEN_consultaRegistrarCategoria(?, ?)",
-      category.idUsuario,
-      category.nombreCategoria
+      category.id_usuario,
+      category.categoria
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
@@ -35,24 +35,16 @@ export const categoryMiddleWare = {
   },
 
   updateCategory: async (req: any) => {
-    const category: IdCategory = req.body;
+    const category: Category = req.body;
     const response = await callSPWithCallback(
       "Call GEN_consultaModificarCategoria(?, ?)",
-      category.idCategoria,
-      category.nombreCategoria
+      category.id_categoria,
+      category.categoria
     )
       .then((response) => {
-        if (response) {
-          return ResponseBodyBuilder(
-            404,
-            true,
-            `Can not find id ${category.nombreCategoria}`);
-          
-        } else {
           
             return ResponseBodyBuilder(200, false, !!response);
           
-        }
       })
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;

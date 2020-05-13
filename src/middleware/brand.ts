@@ -1,4 +1,4 @@
-import { Brand, IdBrand } from "../models/Brand";
+import { Brand } from "../models/Brand";
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
 
@@ -17,7 +17,7 @@ export const brandMiddleware = {
     const response = await callSPWithCallback(
       "Call GEN_consultaRegistrarMarca(?, ?)",
       brand.marca,
-      brand.idUsuario
+      brand.id_usuario
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
@@ -34,11 +34,11 @@ export const brandMiddleware = {
     return response;
   },
   updatetBrand: async (req: any) => {
-    const IdBrand = req.body as IdBrand;
+    const Brand = req.body as Brand;
     const response = await callSPWithCallback(
       "Call GEN_consultaModificarMarca(?, ?)",
-      IdBrand.idMarca,
-      IdBrand.marca
+      Brand.id_marca,
+      Brand.marca
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));

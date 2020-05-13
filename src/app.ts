@@ -90,13 +90,13 @@ app.post(`/${API_VERSION}/auth`, (req: any, res: any, next: any) =>
 );
 
 /** Category API */
-app.get(`/${API_VERSION}/category`, (req: any, res: any, next: any) =>
+app.get(`/${API_VERSION}/other/category`, (req: any, res: any, next: any) =>
   Response(req, res, next, categoryMiddleWare.getCategories)
 );
-app.post(`/${API_VERSION}/category`, (req: any, res: any, next: any) =>
+app.post(`/${API_VERSION}/other/category`, (req: any, res: any, next: any) =>
   Response(req, res, next, categoryMiddleWare.insertCategory)
 );
-app.put(`/${API_VERSION}/category`, (req: any, res: any, next: any) =>
+app.put(`/${API_VERSION}/other/category`, (req: any, res: any, next: any) =>
   Response(req, res, next, categoryMiddleWare.updateCategory)
 );
 app.delete(
@@ -133,6 +133,18 @@ app.delete(
   (req: any, res: any, next: any) =>
     Response(req, res, next, presentationMiddleware.deletetPresentation)
 );
+
+/** Measurements API */
+
+app.get(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =>
+  Response(req, res, next, otherMiddleWare.getMeasurements)
+);
+
+app.post(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =>
+  Response(req, res, next, otherMiddleWare.getMeasurements)
+);
+
+
 /** Others API */
 app.get(`/${API_VERSION}/other/categories`, (req: any, res: any, next: any) =>
   Response(req, res, next, otherMiddleWare.getCategories)
@@ -145,9 +157,7 @@ app.get(
   (req: any, res: any, next: any) =>
     Response(req, res, next, otherMiddleWare.getPresentations)
 );
-app.get(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =>
-  Response(req, res, next, otherMiddleWare.getMeasurements)
-);
+
 app.get(`/${API_VERSION}/other/cities`, (req: any, res: any, next: any) =>
   Response(req, res, next, otherMiddleWare.getCities)
 );
