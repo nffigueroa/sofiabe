@@ -10,6 +10,7 @@ import { middlewareProvider } from "./middleware/provider";
 import { categoryMiddleWare } from "./middleware/category";
 import { brandMiddleware } from "./middleware/brand";
 import { presentationMiddleware } from "./middleware/presentation";
+import { measurementMiddleWare} from "./middleware/measurement";
 
 let app = express();
 
@@ -100,21 +101,21 @@ app.put(`/${API_VERSION}/other/category`, (req: any, res: any, next: any) =>
   Response(req, res, next, categoryMiddleWare.updateCategory)
 );
 app.delete(
-  `/${API_VERSION}/category/:id_categoria`,
+  `/${API_VERSION}/other/category/:id_categoria`,
   (req: any, res: any, next: any) =>
     Response(req, res, next, categoryMiddleWare.deleteCategory)
 );
 /** Brand API */
-app.get(`/${API_VERSION}/brand`, (req: any, res: any, next: any) =>
+app.get(`/${API_VERSION}/other/brand`, (req: any, res: any, next: any) =>
   Response(req, res, next, brandMiddleware.getBrand)
 );
-app.post(`/${API_VERSION}/brand`, (req: any, res: any, next: any) =>
+app.post(`/${API_VERSION}/other/brand`, (req: any, res: any, next: any) =>
   Response(req, res, next, brandMiddleware.insertBrand)
 );
-app.put(`/${API_VERSION}/brand`, (req: any, res: any, next: any) =>
+app.put(`/${API_VERSION}/other/brand`, (req: any, res: any, next: any) =>
   Response(req, res, next, brandMiddleware.updatetBrand)
 );
-app.delete(`/${API_VERSION}/brand/:id_marca`, (req: any, res: any, next: any) =>
+app.delete(`/${API_VERSION}/other/brand/:id_marca`, (req: any, res: any, next: any) =>
   Response(req, res, next, brandMiddleware.deletetBrand)
 );
 
@@ -137,11 +138,16 @@ app.delete(
 /** Measurements API */
 
 app.get(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =>
-  Response(req, res, next, otherMiddleWare.getMeasurements)
+  Response(req, res, next, measurementMiddleWare.getMeasurements)
 );
-
 app.post(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =>
-  Response(req, res, next, otherMiddleWare.getMeasurements)
+  Response(req, res, next, measurementMiddleWare.insertMeasurements)
+);
+app.put(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =>
+  Response(req, res, next, measurementMiddleWare.updateMeasurements)
+);
+app.delete(`/${API_VERSION}/other/measurements/:id_medicion`, (req: any, res: any, next: any) =>
+  Response(req, res, next, measurementMiddleWare.deleteMeasurements)
 );
 
 
@@ -149,8 +155,8 @@ app.post(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =
 app.get(`/${API_VERSION}/other/categories`, (req: any, res: any, next: any) =>
   Response(req, res, next, otherMiddleWare.getCategories)
 );
-app.get(`/${API_VERSION}/other/marks`, (req: any, res: any, next: any) =>
-  Response(req, res, next, otherMiddleWare.getMarks)
+app.get(`/${API_VERSION}/other/Brand`, (req: any, res: any, next: any) =>
+  Response(req, res, next, otherMiddleWare.getBrand)
 );
 app.get(
   `/${API_VERSION}/other/presentations`,

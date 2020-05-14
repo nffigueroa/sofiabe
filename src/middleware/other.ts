@@ -13,7 +13,7 @@ const otherMiddleWare = {
       body: response,
     };
   },
-  getMarks: async () => {
+  getBrand: async () => {
     const response = await callSPWithCallback(
       "Call GEN_consultaLLenarComboMarca()",
       ""
