@@ -10,7 +10,7 @@ import { middlewareProvider } from "./middleware/provider";
 import { categoryMiddleWare } from "./middleware/category";
 import { brandMiddleware } from "./middleware/brand";
 import { presentationMiddleware } from "./middleware/presentation";
-import { measurementMiddleWare} from "./middleware/measurement";
+import { measurementMiddleWare } from "./middleware/measurement";
 
 let app = express();
 
@@ -74,7 +74,7 @@ app.get(`/${API_VERSION}/client`, (req: any, res: any, next: any) =>
   Response(req, res, next, clientMiddleware.getClients)
 );
 app.delete(
-  `/${API_VERSION}/client/:idClient`,
+  `/${API_VERSION}/client/:id_cliente`,
   (req: any, res: any, next: any) =>
     Response(req, res, next, clientMiddleware.deleteClient)
 );
@@ -82,7 +82,7 @@ app.post(`/${API_VERSION}/client/`, (req: any, res: any, next: any) =>
   Response(req, res, next, clientMiddleware.createNewClient)
 );
 app.put(`/${API_VERSION}/client`, (req: any, res: any, next: any) =>
-  Response(req, res, next, clientMiddleware.createNewClient)
+  Response(req, res, next, clientMiddleware.updateClient)
 );
 
 /** User API */
@@ -120,17 +120,17 @@ app.delete(`/${API_VERSION}/other/brand/:id_marca`, (req: any, res: any, next: a
 );
 
 /** Presentation API */
-app.get(`/${API_VERSION}/presentation`, (req: any, res: any, next: any) =>
+app.get(`/${API_VERSION}/other/presentations`, (req: any, res: any, next: any) =>
   Response(req, res, next, presentationMiddleware.getPresentation)
 );
-app.post(`/${API_VERSION}/presentation`, (req: any, res: any, next: any) =>
+app.post(`/${API_VERSION}/other/presentations`, (req: any, res: any, next: any) =>
   Response(req, res, next, presentationMiddleware.insertPresentation)
 );
-app.put(`/${API_VERSION}/presentation`, (req: any, res: any, next: any) =>
+app.put(`/${API_VERSION}/other/presentations`, (req: any, res: any, next: any) =>
   Response(req, res, next, presentationMiddleware.updatetPresentacion)
 );
 app.delete(
-  `/${API_VERSION}/presentation/:id_presentacion`,
+  `/${API_VERSION}/other/presentations/:id_presentacion`,
   (req: any, res: any, next: any) =>
     Response(req, res, next, presentationMiddleware.deletetPresentation)
 );

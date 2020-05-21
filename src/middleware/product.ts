@@ -2,7 +2,6 @@ import { getDateYYYYMMDD, registerMovements, verifyJWT } from "../util/common";
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
 import { Product } from "../models/Product";
-import { User } from "../models/User";
 import { decode } from "jsonwebtoken";
 
 const middlewares = {
@@ -32,9 +31,15 @@ const middlewares = {
       });
     return body;
   },
-  saveProduct: async (req: any) => {
-    const id_sucursal = req.param.idSucursal;
+  saveProduct: async (req: any, token: string) => {
+
     const product_body = req.body as Product;
+
+    const { data: { id_usuario, id_sucursal } }: any = decode(token);
+
+    product_body.id_usuario = id_usuario
+    id_sucursal
+
     const body = await callSPWithCallback(
       "Call IVN_registrarProducto(?, ?, ?, ?, ?, ?, ?, ?)",
       product_body.nombre_producto,

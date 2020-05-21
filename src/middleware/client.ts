@@ -8,6 +8,7 @@ const clientMiddleware = {
     const {
       data: { id_sucursal },
     }: any = decode(token);
+
     const response = await callSPWithCallback(
       "Call CLI_llenarTabla_Cliente(?)",
       id_sucursal
@@ -18,8 +19,15 @@ const clientMiddleware = {
       );
     return response;
   },
-  createNewClient: async (req: any) => {
+  createNewClient: async (req: any, token: string) => {
+
     const bodyCereateNewClient = req.body as Client;
+
+    const { data: { id_usuario, id_sucursal } }: any = decode(token);
+
+    bodyCereateNewClient.id_usuario = id_usuario;
+    bodyCereateNewClient.id_sucursal = id_sucursal;
+
     // registerMovements({process: 'createNewClient', id_usuario:  bodyCereateNewClient.id_usuario, descripcion: `Se registra cliente id_usuario: ${bodyCereateNewClient.id_usuario}`})
     const response = await callSPWithCallback(
       "Call CLI_registrarCliente(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -40,7 +48,6 @@ const clientMiddleware = {
       bodyCereateNewClient.dv
     )
       .then((response: any) => {
-        console.log(response);
         //registerMovements({process: 'createNewClient', id_usuario:  bodyCereateNewClient.id_usuario, descripcion: `Registro de cliente exitoso id_cliente: ${response.id_cliente}`})
         return ResponseBodyBuilder(200, false, {
           ...response[0],
@@ -50,7 +57,7 @@ const clientMiddleware = {
     return response;
   },
   deleteClient: async (req: any) => {
-    const idClient = req.params.idClient;
+    const idClient = req.params.id_cliente;
     const response = await callSPWithCallback(
       "Call CLI_eliminar_Cliente(?)",
       idClient
@@ -65,15 +72,34 @@ const clientMiddleware = {
       .catch((error) => ResponseBodyBuilder(500, false, error));
     return response;
   },
-  updateClient: async (req: any) => {
+  updateClient: async (req: any, token: string) => {
+
     const clientUpdated = req.body as Client;
-    console.log(clientUpdated);
+
+    const { data: { id_usuario, id_sucursal } }: any = decode(token);
+
+    clientUpdated.id_usuario = id_usuario
+    clientUpdated.id_sucursal = id_sucursal
+
+    console.log(req.body)
     const response = await callSPWithCallback(
-      "Call CLI_consultaActualizarCliente(?, ?, ? , ?, ? , ?, ?)",
-      clientUpdated
+      "Call CLI_consultaActualizarCliente(?, ?, ? , ?, ? , ? , ? , ? , ? , ? , ? , ?)",
+      clientUpdated.id_usuario,
+      clientUpdated.id_cliente,
+      clientUpdated.nombre_cliente,
+      clientUpdated.apellido_cliente,
+      clientUpdated.cedula_cliente,
+      clientUpdated.mail_cliente,
+      clientUpdated.direccion_cliente,
+      clientUpdated.telefono_cliente,
+      clientUpdated.id_ciudad,
+      clientUpdated.id_sucursal,
+      clientUpdated.esJuridico,
+      clientUpdated.dv,
+
     )
       .then((response) => {
-        if (response) {
+        if (!response) {
           return ResponseBodyBuilder(200, false, !!response);
         } else {
           return ResponseBodyBuilder(
