@@ -13,7 +13,7 @@ const otherMiddleWare = {
       body: response,
     };
   },
-  getMarks: async () => {
+  getBrand: async () => {
     const response = await callSPWithCallback(
       "Call GEN_consultaLLenarComboMarca()",
       ""
@@ -33,6 +33,7 @@ const otherMiddleWare = {
       body: response,
     };
   },
+  
   getMeasurements: async () => {
     const response = await callSPWithCallback(
       "Call GEN_consultaLLenarComboMedicion()",
@@ -43,9 +44,10 @@ const otherMiddleWare = {
       body: response,
     };
   },
+  
   getCities: async () => {
     const response = await callSPWithCallback(
-      "Call GEN_llenarComboCidad_Mi_Sucursal()",
+      "Call GEN_llenarComboCiudad_Mi_Sucursal()",
       ""
     );
     return {

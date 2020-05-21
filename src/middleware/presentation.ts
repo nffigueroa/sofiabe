@@ -1,44 +1,43 @@
-import { Brand } from "../models/Brand";
+import { Presentation } from "../models/Presentation";
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
 
-export const brandMiddleware = {
-  getBrand: async () => {
+export const presentationMiddleware = {
+  getPresentation: async () => {
     const response = await callSPWithCallback(
-      "Call GEN_consultaLLenarComboMarca()",
+      "Call GEN_consultaLLenarComboPresentacion()",
       ""
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  insertBrand: async (req: any) => {
-    const brand = req.body as Brand;
+  insertPresentation: async (req: any) => {
+    const presentation = req.body.presentacion;
     const response = await callSPWithCallback(
-      "Call GEN_consultaRegistrarMarca(?, ?)",
-      brand.marca,
-      brand.id_usuario
+      "Call GEN_consultaRegistrarPresentacion(?)",
+      presentation
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  deletetBrand: async (req: any) => {
-    const brand = req.params.id_marca;
+  deletetPresentation: async (req: any) => {
+    const presentation = req.params.id_presentacion;
     const response = await callSPWithCallback(
-      "Call GEN_consultaEliminarMarca(?)",
-      brand
+      "Call GEN_consultaEliminarPresentacion(?)",
+      presentation
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  updatetBrand: async (req: any) => {
-    const Brand = req.body as Brand;
+  updatetPresentacion: async (req: any) => {
+    const presentation = req.body as Presentation;
     const response = await callSPWithCallback(
-      "Call GEN_consultaModificarMarca(?, ?)",
-      Brand.id_marca,
-      Brand.marca
+      "Call GEN_consultaModificarPresentacion(?, ?)",
+      presentation.idPresentacion,
+      presentation.presentacion
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
