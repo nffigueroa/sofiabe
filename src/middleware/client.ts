@@ -63,7 +63,7 @@ const clientMiddleware = {
       idClient
     )
       .then((response) => {
-        if (response) {
+        if (!response) {
           return ResponseBodyBuilder(200, false, !!response);
         } else {
           return ResponseBodyBuilder(404, true, `Can not find id ${idClient}`);
