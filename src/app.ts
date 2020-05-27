@@ -11,6 +11,7 @@ import { categoryMiddleWare } from "./middleware/category";
 import { brandMiddleware } from "./middleware/brand";
 import { presentationMiddleware } from "./middleware/presentation";
 import { measurementMiddleWare } from "./middleware/measurement";
+import { middlewareInventory } from "./middleware/inventory";
 
 let app = express();
 
@@ -18,16 +19,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.all("/*", (req: any, res: any, next: any) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // restrict it to the required domain
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
-    "access-token",
-    "content-type",
-    "Content-type,Accept,X-Custom-Header"
+    "Origin, X-Requeted-With, Content-Type, Accept, Authorization, RBR"
   );
+  if (req.headers.origin) {
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+  }
   if (req.method === "OPTIONS") {
-    return res.status(200).end();
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
+    return res.status(200).json({});
   }
   next();
 });
@@ -69,6 +71,16 @@ app.delete(
     Response(req, res, next, middlewares.deleteProduct)
 );
 
+/** Inventory API */
+app.get(`/${API_VERSION}/inventory`, (req: any, res: any, next: any) =>
+  Response(req, res, next, middlewareInventory.getInventory)
+);
+app.post(
+  `/${API_VERSION}/inventory/register`,
+  (req: any, res: any, next: any) =>
+    Response(req, res, next, middlewareInventory.insertProductIntoInventory)
+);
+
 /** Client API */
 app.get(`/${API_VERSION}/client`, (req: any, res: any, next: any) =>
   Response(req, res, next, clientMiddleware.getClients)
@@ -88,6 +100,18 @@ app.put(`/${API_VERSION}/client`, (req: any, res: any, next: any) =>
 /** User API */
 app.post(`/${API_VERSION}/auth`, (req: any, res: any, next: any) =>
   Response(req, res, next, userMiddleware.loginProcess, false)
+);
+app.get(`/${API_VERSION}/user`, (req: any, res: any, next: any) =>
+  Response(req, res, next, userMiddleware.getUserByCompany)
+);
+app.post(`/${API_VERSION}/user`, (req: any, res: any, next: any) =>
+  Response(req, res, next, userMiddleware.insertUserProperties)
+);
+app.put(`/${API_VERSION}/user`, (req: any, res: any, next: any) =>
+  Response(req, res, next, userMiddleware.updateUserProperties)
+);
+app.delete(`/${API_VERSION}/user/:idUsuario`, (req: any, res: any, next: any) =>
+  Response(req, res, next, userMiddleware.deleteUser)
 );
 
 /** Category API */
@@ -115,19 +139,27 @@ app.post(`/${API_VERSION}/other/brand`, (req: any, res: any, next: any) =>
 app.put(`/${API_VERSION}/other/brand`, (req: any, res: any, next: any) =>
   Response(req, res, next, brandMiddleware.updatetBrand)
 );
-app.delete(`/${API_VERSION}/other/brand/:id_marca`, (req: any, res: any, next: any) =>
-  Response(req, res, next, brandMiddleware.deletetBrand)
+app.delete(
+  `/${API_VERSION}/other/brand/:id_marca`,
+  (req: any, res: any, next: any) =>
+    Response(req, res, next, brandMiddleware.deletetBrand)
 );
 
 /** Presentation API */
-app.get(`/${API_VERSION}/other/presentations`, (req: any, res: any, next: any) =>
-  Response(req, res, next, presentationMiddleware.getPresentation)
+app.get(
+  `/${API_VERSION}/other/presentations`,
+  (req: any, res: any, next: any) =>
+    Response(req, res, next, presentationMiddleware.getPresentation)
 );
-app.post(`/${API_VERSION}/other/presentations`, (req: any, res: any, next: any) =>
-  Response(req, res, next, presentationMiddleware.insertPresentation)
+app.post(
+  `/${API_VERSION}/other/presentations`,
+  (req: any, res: any, next: any) =>
+    Response(req, res, next, presentationMiddleware.insertPresentation)
 );
-app.put(`/${API_VERSION}/other/presentations`, (req: any, res: any, next: any) =>
-  Response(req, res, next, presentationMiddleware.updatetPresentacion)
+app.put(
+  `/${API_VERSION}/other/presentations`,
+  (req: any, res: any, next: any) =>
+    Response(req, res, next, presentationMiddleware.updatetPresentacion)
 );
 app.delete(
   `/${API_VERSION}/other/presentations/:id_presentacion`,
@@ -140,16 +172,19 @@ app.delete(
 app.get(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =>
   Response(req, res, next, measurementMiddleWare.getMeasurements)
 );
-app.post(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =>
-  Response(req, res, next, measurementMiddleWare.insertMeasurements)
+app.post(
+  `/${API_VERSION}/other/measurements`,
+  (req: any, res: any, next: any) =>
+    Response(req, res, next, measurementMiddleWare.insertMeasurements)
 );
 app.put(`/${API_VERSION}/other/measurements`, (req: any, res: any, next: any) =>
   Response(req, res, next, measurementMiddleWare.updateMeasurements)
 );
-app.delete(`/${API_VERSION}/other/measurements/:id_medicion`, (req: any, res: any, next: any) =>
-  Response(req, res, next, measurementMiddleWare.deleteMeasurements)
+app.delete(
+  `/${API_VERSION}/other/measurements/:id_medicion`,
+  (req: any, res: any, next: any) =>
+    Response(req, res, next, measurementMiddleWare.deleteMeasurements)
 );
-
 
 /** Others API */
 app.get(`/${API_VERSION}/other/categories`, (req: any, res: any, next: any) =>
@@ -171,6 +206,9 @@ app.get(
   `/${API_VERSION}/other/company/sucursal`,
   (req: any, res: any, next: any) =>
     Response(req, res, next, otherMiddleWare.getAllSucursalsByCompany)
+);
+app.get(`/${API_VERSION}/other/roles`, (req: any, res: any, next: any) =>
+  Response(req, res, next, otherMiddleWare.getRoles)
 );
 
 export default app;

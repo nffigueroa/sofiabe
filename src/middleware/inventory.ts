@@ -1,6 +1,7 @@
 import { ProductInventory } from "../models/ProductInventory";
 import { ResponseBodyBuilder } from "../models/responseBody";
 import { callSPWithCallback } from "../network";
+import { decode } from "jsonwebtoken";
 
 export const middlewareInventory = {
   getQuantityAndProductCost: async (req: any) => {
@@ -37,21 +38,34 @@ export const middlewareInventory = {
       .catch((err: any) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  getInventory: async (req: any) => {
-    const { idSucursal } = req.params;
+  getInventory: async (req: any, token: string) => {
+    const { id_sucursal } = req.params;
     const response = await callSPWithCallback(
       "Call IVN_llenarTabla_inventario(?)",
-      idSucursal
+      id_sucursal
     )
       .then((response: any) => ResponseBodyBuilder(200, false, response))
       .catch((err: any) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  insertProductIntoInventory: async (req: any) => {
-    const newinventoryProduct: ProductInventory = req.body;
+  insertProductIntoInventory: async (req: any, token: string) => {
+    const newinventoryProduct: ProductInventory = req;
+    const {
+      data: { id_sucursal, id_usuario },
+    }: any = decode(token);
     const response = await callSPWithCallback(
       "Call IVN_consultaRegistrarProductoInventario(?,?,?,?,?,?,?,?,?,?,?,?,?)",
-      newinventoryProduct
+      newinventoryProduct.id_producto,
+      newinventoryProduct.cantidad,
+      newinventoryProduct.stock,
+      id_sucursal,
+      newinventoryProduct.id_proveedor,
+      newinventoryProduct.barras,
+      newinventoryProduct.precio1,
+      newinventoryProduct.precio2,
+      newinventoryProduct.iva,
+      newinventoryProduct.expiracion,
+      id_usuario
     )
       .then((response: any) => ResponseBodyBuilder(200, false, response))
       .catch((err: any) => ResponseBodyBuilder(500, true, err));

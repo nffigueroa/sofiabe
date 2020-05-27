@@ -103,6 +103,14 @@ const otherMiddleWare = {
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
+  getRoles: async () => {
+    const response = await callSPWithCallback(
+      "Call GEN_consultaLlenarComboCargo()"
+    )
+      .then((response) => ResponseBodyBuilder(200, false, response))
+      .catch((err) => ResponseBodyBuilder(500, true, err));
+    return response;
+  },
 };
 
 export default otherMiddleWare;
