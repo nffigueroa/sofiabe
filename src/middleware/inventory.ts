@@ -54,8 +54,8 @@ export const middlewareInventory = {
       data: { id_sucursal, id_usuario },
     }: any = decode(token);
     const response = await callSPWithCallback(
-      "Call IVN_consultaRegistrarProductoInventario(?,?,?,?,?,?,?,?,?,?,?,?,?)",
-      newinventoryProduct.id_producto,
+      "Call IVN_consultaRegistrarProductoInventario(?,?,?,?,?,?,?,?,?,?,?)",
+      newinventoryProduct.id_Produccto,
       newinventoryProduct.cantidad,
       newinventoryProduct.stock,
       id_sucursal,
