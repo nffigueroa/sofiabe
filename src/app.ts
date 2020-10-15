@@ -87,7 +87,6 @@ app.post(
     Response(req, res, next, middlewareInventory.insertProductIntoInventory)
 );
 
-app.get(`/${API_VERSION}/inventory/bill/:idFactura/articles`, (req: any, res: any, next: any) => Response(req, res, next, middlewareInventory.getArticlesByBill))
 
 /** Client API */
 app.get(`/${API_VERSION}/client`, (req: any, res: any, next: any) =>

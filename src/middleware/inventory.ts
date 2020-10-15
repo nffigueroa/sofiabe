@@ -39,7 +39,9 @@ export const middlewareInventory = {
     return response;
   },
   getInventory: async (req: any, token: string) => {
-    const { id_sucursal } = req.params;
+    const {
+      data: { id_sucursal },
+    }: any = decode(token);
     const response = await callSPWithCallback(
       "Call IVN_llenarTabla_inventario(?)",
       id_sucursal

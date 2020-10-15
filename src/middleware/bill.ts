@@ -1,18 +1,30 @@
 import { callSPWithCallback } from "../network";
 import { ResponseBodyBuilder } from "../models/responseBody";
+import { decode } from "jsonwebtoken";
 
 export const billMiddleware = {
-  getBillTable: async (req: any) => {
-    const { idSucursal, fechaLog, fechaHasta, ban } = req.body;
-    const response = await callSPWithCallback(
+  getBillTable: async (req: any, token: string) => {
+    const {
+      data: { id_sucursal },
+    }: any = decode(token);
+    const { getBillDetails } = billMiddleware;
+    const { from, to, showAllBills } = req.query;
+
+    const response: any = await callSPWithCallback(
       "Call CON_consultaLlenarTablaFactura(?,?,?,?)",
-      idSucursal,
-      fechaLog,
-      fechaHasta,
-      ban
+      id_sucursal,
+      from,
+      to,
+      Boolean(showAllBills)
     )
       .then((data) => ResponseBodyBuilder(200, false, data))
       .catch((err) => ResponseBodyBuilder(500, true, err));
+    response.body = await Promise.all(response.body.map(async (bill: any) => {
+      bill.history = await getBillDetails(bill.id_factura);
+      return bill;
+    }));
+    console.log(response);
+    
     return response;
   },
   firstDateBill: async (req: any) => {
@@ -25,14 +37,11 @@ export const billMiddleware = {
       .catch((err) => ResponseBodyBuilder(500, true, err));
     return response;
   },
-  getBillDetails: async (req: any) => {
-    const { idFactura } = req.body;
+  getBillDetails: async (idFactura: number) => {
     const response = await callSPWithCallback(
       "Call GEN_consultaLlenarArticulos(?)",
       idFactura
-    )
-      .then((data) => ResponseBodyBuilder(200, false, data))
-      .catch((err) => ResponseBodyBuilder(500, true, err));
+    );
     return response;
   },
   cancelBill: async (req: any) => {
