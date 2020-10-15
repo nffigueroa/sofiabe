@@ -12,6 +12,7 @@ import { brandMiddleware } from "./middleware/brand";
 import { presentationMiddleware } from "./middleware/presentation";
 import { measurementMiddleWare } from "./middleware/measurement";
 import { middlewareInventory } from "./middleware/inventory";
+import { billMiddleware } from "./middleware/bill";
 
 let app = express();
 
@@ -33,6 +34,11 @@ app.all("/*", (req: any, res: any, next: any) => {
   }
   next();
 });
+
+/** Bill API */
+app.get(`/${API_VERSION}/bill`, (req: any, res: any, next: any) =>
+  Response(req, res, next, billMiddleware.getBillTable)
+);
 
 /** Provider API */
 app.get(`/${API_VERSION}/provider`, (req: any, res: any, next: any) =>
@@ -80,6 +86,8 @@ app.post(
   (req: any, res: any, next: any) =>
     Response(req, res, next, middlewareInventory.insertProductIntoInventory)
 );
+
+app.get(`/${API_VERSION}/inventory/bill/:idFactura/articles`, (req: any, res: any, next: any) => Response(req, res, next, middlewareInventory.getArticlesByBill))
 
 /** Client API */
 app.get(`/${API_VERSION}/client`, (req: any, res: any, next: any) =>
